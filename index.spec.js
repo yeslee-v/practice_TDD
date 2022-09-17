@@ -29,7 +29,7 @@ describe("GET /users", () => {
   });
 });
 
-describe("GET /users/1", () => {
+describe("GET /users/:id", () => {
   describe("Success", () => {
     it("Response object that id is 1", (done) => {
       request(app)
@@ -50,7 +50,7 @@ describe("GET /users/1", () => {
   });
 });
 
-describe("DELETE /users/1", () => {
+describe("DELETE /users/:id", () => {
   describe("Sucess", () => {
     it("Response 204", (done) => {
       request(app).delete("/users/1").expect(204).end(done);
@@ -92,6 +92,40 @@ describe("POST /users", () => {
       request(app)
         .post("/users")
         .send({ name: "daniel" }) // Delete method에서 1번을 삭제해서 alice를 넣으면 create되어 201이 나온다
+        .expect(409)
+        .end(done);
+    });
+  });
+});
+
+describe("PUT /users/:id", () => {
+  describe("Success", () => {
+    it("Response updated user object", (done) => {
+      const name = "chally";
+      request(app)
+        .put("/users/3")
+        .send({ name })
+        .end((err, res) => {
+          res.body.should.have.property("name", name);
+          done();
+        });
+    });
+  });
+  describe("Fail", () => {
+    it("Response 400 if id is not integer", (done) => {
+      request(app).put("/users/one").expect(400).end(done);
+    });
+    it("Response 400 if name is not provided", (done) => {
+      request(app).put("/users/1").send({}).expect(400).end(done);
+    });
+    it("Response 404 if user does not exist", (done) => {
+      // send method가 없으면 name이 없다고 간주하여 400이 나온다
+      request(app).put("/users/4").send({ name: "foo" }).expect(404).end(done);
+    });
+    it("Response 409 if name is duplicated", (done) => {
+      request(app)
+        .put("/users/3")
+        .send({ name: "bek" }) // bek으로 할 때는 되는데 chris로 할 때는 안되는지 모르겠다
         .expect(409)
         .end(done);
     });

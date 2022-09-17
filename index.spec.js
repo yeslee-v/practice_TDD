@@ -2,7 +2,7 @@ const request = require("supertest");
 const should = require("should");
 const app = require("./index");
 
-describe("GET /users는", () => {
+describe("GET /users", () => {
   describe("Success", () => {
     it("Response user object array", (done) => {
       request(app)
@@ -29,7 +29,7 @@ describe("GET /users는", () => {
   });
 });
 
-describe("GET /users/1은", () => {
+describe("GET /users/1", () => {
   describe("Success", () => {
     it("Response object that id is 1", (done) => {
       request(app)
@@ -50,7 +50,7 @@ describe("GET /users/1은", () => {
   });
 });
 
-describe("DELETE /users/1은", () => {
+describe("DELETE /users/1", () => {
   describe("Sucess", () => {
     it("Response 204", (done) => {
       request(app).delete("/users/1").expect(204).end(done);
@@ -59,6 +59,41 @@ describe("DELETE /users/1은", () => {
   describe("Fail", () => {
     it("Response if id is not integer", (done) => {
       request(app).delete("/users/one").expect(400).end(done);
+    });
+  });
+});
+
+describe("POST /users", () => {
+  describe("Success", () => {
+    let name = "daniel",
+      body;
+    before((done) => {
+      request(app)
+        .post("/users")
+        .send({ name })
+        .expect(201)
+        .end((err, res) => {
+          body = res.body;
+          done();
+        });
+    });
+    it("Response created user object", () => {
+      body.should.have.property("id");
+    });
+    it("Response inputted name", () => {
+      body.should.have.property("name", name);
+    });
+  });
+  describe("Fail", () => {
+    it("Response 400 if name is not provided", (done) => {
+      request(app).post("/users").send({}).expect(400).end(done);
+    });
+    it("Response 409 if name is duplicated", (done) => {
+      request(app)
+        .post("/users")
+        .send({ name: "daniel" }) // Delete method에서 1번을 삭제해서 alice를 넣으면 create되어 201이 나온다
+        .expect(409)
+        .end(done);
     });
   });
 });

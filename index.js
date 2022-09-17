@@ -32,6 +32,16 @@ app.get("/users/:id", (req, res) => {
   res.json(user);
 });
 
+app.delete("/users/:id", (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (Number.isNaN(id)) {
+    return res.status(400).end();
+  }
+  // id가 같지 않은 user만 기존의 users 객체에 넣어준다
+  users = users.filter((user) => user.id !== id);
+  res.status(204).end();
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

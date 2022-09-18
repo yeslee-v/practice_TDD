@@ -11,8 +11,4 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 app.use("/users", user);
 
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`);
-// });
-
 module.exports = app;

@@ -1,6 +1,8 @@
+// test code
+
 const request = require("supertest");
 const should = require("should");
-const app = require("./index");
+const app = require("../../index");
 
 describe("GET /users", () => {
   describe("Success", () => {

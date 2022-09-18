@@ -8,8 +8,12 @@
 // 서버를 실행하는 명령어를 bin/www.js에 작성하고 start script를 수정한다
 
 const app = require("../index");
+const syncDb = require("./sync-db");
 const port = 3000;
-다;
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+
+syncDb().then((_) => {
+  console.log("Sync Database");
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+  });
 });

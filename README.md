@@ -10,7 +10,7 @@
 ## Goals
 
 - `Node.js`와 `Express.js`의 배경을 이해하며 동작 원리를 익힌다.
-- `TDD`의 정의와 사용 이유에 대해 고민한다.
+- `TDD`의 정의와 사용 이유에 대해 알아본다.
 - `Express.js`와 `Nest.js`, `Jest`와 `Mocha`를 각각 비교해본다.
 
 ## reference
